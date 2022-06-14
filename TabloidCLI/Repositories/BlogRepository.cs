@@ -45,9 +45,21 @@ namespace TabloidCLI
             return blog;
         }
 
-        public void Insert(Blog entry)
+        public void Insert(Blog blog)
         {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Blog (Title, URL)
+                                        VALUES (@title, @url)";
+                    cmd.Parameters.AddWithValue("@title", blog.Title);
+                    cmd.Parameters.AddWithValue("@url", blog.Url);
 
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Update(Blog entry)
