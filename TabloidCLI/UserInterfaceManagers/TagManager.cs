@@ -93,7 +93,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Add()
         {
-            Console.WriteLine("New Author");
+            Console.WriteLine("New Tag");
             Tag tag = new Tag();
 
             Console.Write("Tag Name: ");
