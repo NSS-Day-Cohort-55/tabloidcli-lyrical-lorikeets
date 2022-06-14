@@ -100,9 +100,7 @@ namespace TabloidCLI
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"UPDATE Tag 
-                                           SET Name = @name,
-                                               LastName = @lastName,
-                                               bio = @bio
+                                         SET Name = @name,
                                          WHERE id = @id";
 
                     cmd.Parameters.AddWithValue("@name", tag.Name);
