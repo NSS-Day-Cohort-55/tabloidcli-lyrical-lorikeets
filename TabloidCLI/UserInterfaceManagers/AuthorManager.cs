@@ -32,7 +32,10 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
+                    Console.WriteLine("Author List");
+                    Console.WriteLine("-----------");
                     List();
+                    Console.WriteLine();
                     return this;
                 case "2":
                     Author author = Choose();
