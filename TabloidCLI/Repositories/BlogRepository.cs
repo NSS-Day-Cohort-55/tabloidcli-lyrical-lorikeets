@@ -64,12 +64,12 @@ namespace TabloidCLI
 
         public void Update(Blog entry)
         {
-
+            throw new NotImplementedException();
         }
 
         public void Delete(int id)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
