@@ -21,6 +21,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.WriteLine("Blog Menu");
             Console.WriteLine(" 1) List Blogs");
+            Console.WriteLine(" 2) Add Blog");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -29,6 +30,9 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 case "1":
                     List();
+                    return this;
+                case "2":
+                    Add();
                     return this;
                 case "0":
                     return _parentUI;
@@ -45,6 +49,20 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine(blog);
             }
+        }
+
+        private void Add()
+        {
+            Console.WriteLine("New Blog");
+            Blog blog = new Blog();
+
+            Console.Write("Title: ");
+            blog.Title = Console.ReadLine();
+
+            Console.Write("URL: ");
+            blog.Url = Console.ReadLine();
+
+            _blogRepository.Insert(blog);
         }
     }
 }
