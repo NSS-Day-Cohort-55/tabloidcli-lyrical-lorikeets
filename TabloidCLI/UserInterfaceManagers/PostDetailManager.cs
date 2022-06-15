@@ -67,7 +67,15 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"Title: {post.Title}");
             Console.WriteLine($"Url: {post.Url}"); 
             Console.WriteLine($"Publish Date and Time: {post.PublishDateTime}");
-            Console.WriteLine();
+            Console.WriteLine("Tags:");
+            foreach (Tag tag in post.Tags)
+            {
+                Console.WriteLine(" " + tag);
+            }
+            // this is needed to show the result to the user
+            // otherwise, the control will return immediately
+            // to the parent.
+            Console.ReadLine();
         }
 
         private void AddTag()
