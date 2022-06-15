@@ -218,7 +218,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 postToEdit.Url = url;
             }
-            Console.Write("Edit Publish DateTime (blank to leave unchanged): ");           
+            Console.Write("Edit Publish DateTime (blank to leave unchanged): ");
             DateTime userDateTime = postToEdit.PublishDateTime;
             DateTime.TryParse(Console.ReadLine(), out userDateTime);
 
