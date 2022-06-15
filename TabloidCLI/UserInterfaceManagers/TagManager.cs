@@ -89,6 +89,8 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine(tag);
             }
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
         }
 
         private void Add()
