@@ -4,27 +4,27 @@ using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
-    public class TagManager : IUserInterfaceManager
+    public class JournalManager : IUserInterfaceManager
     {
         private readonly IUserInterfaceManager _parentUI;
-        private TagRepository _tagRepository;
+        private JournalRepository _journalRepository;
         private string _connectionString;
 
 
-        public TagManager(IUserInterfaceManager parentUI, string connectionString)
+        public JournalManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
-            _tagRepository = new TagRepository(connectionString);
+            _journalRepository = new JournalRepository(connectionString);
             _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
         {
-            Console.WriteLine("Tag Menu");
-            Console.WriteLine(" 1) List Tags");
-            Console.WriteLine(" 2) Add Tag");
-            Console.WriteLine(" 3) Edit Tag");
-            Console.WriteLine(" 4) Remove Tag");
+            Console.WriteLine("Journal Menu");
+            Console.WriteLine(" 1) List Journal Entries");
+            Console.WriteLine(" 2) Add Journal Entry");
+            Console.WriteLine(" 3) Edit Journal Entries");
+            Console.WriteLine(" 4) Remove Journal Entry");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -51,7 +51,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        private Tag Choose(string prompt = null)
+        private Journal Choose(string prompt = null)
         {
             if (prompt == null)
             {
@@ -60,12 +60,12 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.WriteLine(prompt);
 
-            List<Tag> tags = _tagRepository.GetAll();
+            List<Journal> journals = _journalRepository.GetAll();
 
-            for (int i = 0; i < tags.Count; i++)
+            for (int i = 0; i < journals.Count; i++)
             {
-                Tag tag = tags[i];
-                Console.WriteLine($" {i + 1}) {tag.Name}");
+                Journal journal = journals[i];
+                Console.WriteLine($" {i + 1}) {journal.Title}");
             }
             Console.Write("> ");
 
@@ -73,7 +73,7 @@ namespace TabloidCLI.UserInterfaceManagers
             try
             {
                 int choice = int.Parse(input);
-                return tags[choice - 1];
+                return journals[choice - 1];
             }
             catch (Exception ex)
             {
@@ -84,49 +84,36 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            List<Tag> tags = _tagRepository.GetAll();
-            foreach (Tag tag in tags)
-            {
-                Console.WriteLine(tag);
-            }
+
         }
 
         private void Add()
         {
-            Console.WriteLine("New Tag");
-            Tag tag = new Tag();
+            Console.WriteLine("New Journal");
+            Journal journal = new Journal();
 
-            Console.Write("Tag Name: ");
-            tag.Name = Console.ReadLine();
+            Console.Write("Journal Title: ");
+            journal.Title = Console.ReadLine();
 
-            _tagRepository.Insert(tag);
+            Console.Write("Journal Content: ");
+            journal.Content = Console.ReadLine();
+
+            journal.CreateDateTime = DateTime.Now;
+
+            _journalRepository.Insert(journal);
         }
 
         private void Edit()
         {
-            Tag tagToEdit = Choose("Which tag would you like to edit?");
-            if (tagToEdit == null)
-            {
-                return;
-            }
 
-            Console.WriteLine();
-            Console.Write("New name (blank to leave unchanged): ");
-            string name = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                tagToEdit.Name = name;
-            }
-
-            _tagRepository.Update(tagToEdit);
         }
 
         private void Remove()
         {
-            Tag tagToDelete = Choose("Which tag would you like to remove?");
-            if (tagToDelete != null)
+            Journal journalEntryToDelete = Choose("Which journal entry would you like to remove?");
+            if (journalEntryToDelete != null)
             {
-                _tagRepository.Delete(tagToDelete.Id);
+                _journalRepository.Delete(journalEntryToDelete.Id);
             }
         }
     }

@@ -66,7 +66,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine(" " + tag);
             }
-            Console.WriteLine();
+            Console.ReadLine();
         }
 
         private void ViewBlogPosts()
@@ -77,6 +77,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine(post);
             }
             Console.WriteLine();
+            Console.ReadLine();
         }
 
         private void AddTag()

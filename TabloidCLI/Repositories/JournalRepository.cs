@@ -7,108 +7,99 @@ using TabloidCLI.UserInterfaceManagers;
 
 namespace TabloidCLI
 {
-    public class TagRepository : DatabaseConnector, IRepository<Tag>
+    public class JournalRepository : DatabaseConnector, IRepository<Journal>
     {
-        public TagRepository(string connectionString) : base(connectionString) { }
+        public JournalRepository(string connectionString) : base(connectionString) { }
 
-        public List<Tag> GetAll()
+        public List<Journal> GetAll()
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT id, Name FROM Tag";
-                    List<Tag> tags = new List<Tag>();
+                    cmd.CommandText = @"SELECT * FROM Journal";
+                    List<Journal> journals = new List<Journal>();
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Tag tag = new Tag()
+                        Journal journal = new Journal()
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Content = reader.GetString(reader.GetOrdinal("Content")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime"))
                         };
-                        tags.Add(tag);
+                        journals.Add(journal);
                     }
 
                     reader.Close();
 
-                    return tags;
+                    return journals;
                 }
             }
         }
 
-        public Tag Get(int id)
+        public Journal Get(int id)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT Id AS TagId,
-                                               Name,
-                                          FROM Tag
+                    cmd.CommandText = @"SELECT Id AS JournalId,
+                                               Title,
+                                          FROM Journal
                                           WHERE id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
 
-                    Tag tag = null;
+                    Journal journal = null;
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        if (tag == null)
+                        if (journal == null)
                         {
-                            tag = new Tag()
+                            journal = new Journal()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Content = reader.GetString(reader.GetOrdinal("Content")),
+                                CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime"))
                             };
                         }
                     }
 
                     reader.Close();
 
-                    return tag;
+                    return journal;
                 }
             }
         }
 
-        public void Insert(Tag tag)
+        public void Insert(Journal journal)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Tag (Name)
-                                        VALUES (@Name)";
-
-                    cmd.Parameters.AddWithValue("@Name", tag.Name);
+                    cmd.CommandText = @"INSERT INTO Journal (Title, Content, CreateDateTime)
+                                        VALUES (@title, @content, @createDateTime)";
+                    cmd.Parameters.AddWithValue("@title", journal.Title);
+                    cmd.Parameters.AddWithValue("@content", journal.Content);
+                    cmd.Parameters.AddWithValue("@createDateTime", journal.CreateDateTime);
 
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        public void Update(Tag tag)
+        public void Update(Journal journal)
         {
-            using (SqlConnection conn = Connection)
-            {
-                conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"UPDATE Tag 
-                                         SET Name = @Name
-                                         WHERE Id = @id";
-
-                    cmd.Parameters.AddWithValue("@Name", tag.Name);
-                    cmd.Parameters.AddWithValue("@id", tag.Id);
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            //Update a Journal Entry By Id
         }
 
         public void Delete(int id)
@@ -118,7 +109,7 @@ namespace TabloidCLI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"DELETE FROM Tag 
+                    cmd.CommandText = @"DELETE FROM Journal 
                                         WHERE id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);

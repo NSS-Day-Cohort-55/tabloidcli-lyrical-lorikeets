@@ -19,5 +19,6 @@ namespace TabloidCLI.Models
 URL: {Url}
 Author: {Author.FullName}";
         }
+        public List<Tag> Tags { get; set; } = new List<Tag>();
     }
 }
