@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
+using TabloidCLI.UserInterfaceManagers;
 
 namespace TabloidCLI.Repositories
 {
@@ -30,7 +31,7 @@ namespace TabloidCLI.Repositories
                             Title = reader.GetString(reader.GetOrdinal("Title")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
                             CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
-                            post.PostId = reader.GetInt32(reader.GetOrdinal("post.PostId"))
+                            note.PostId = reader.GetInt32(reader.GetOrdinal("note.PostId"))
 
                             Post = new Post()
                             {
@@ -98,10 +99,27 @@ namespace TabloidCLI.Repositories
 
         public void Insert(Note note)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Note (Title, Content, CreateDateTime, PostId);
+                    VALUES (@NoteTitle, @NoteContent, @CreateDateTime, @PostId)";
+
+                    cmd.Parameters.AddWithValue("@NoteTitle", note.Title);
+                    cmd.Parameters.AddWithValue("@NoteContent", note.Content);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", note.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@postId", note.PostId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
-        public void Update(Note note)
+
+
+                    public void Update(Note note)
         {
             throw new NotImplementedException();
         }

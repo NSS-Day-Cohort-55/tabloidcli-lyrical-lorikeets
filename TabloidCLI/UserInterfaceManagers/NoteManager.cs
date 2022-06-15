@@ -70,11 +70,13 @@ namespace TabloidCLI.UserInterfaceManagers
             note.Content = Console.ReadLine();
 
             Console.Write("Created: ");
-            note.DateTime = Console.ReadLine();
+            note.CreateDateTime = DateTime.Now;
+
+            
 
             _noteRepository.Insert(note);
 
-            Console.WriteLine("A related Post: ");
+            Console.WriteLine($"A related Post: {note.Title} is added to the notes list.");
             note.PostId = Console.ReadLine();
         }
 
