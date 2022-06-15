@@ -7,8 +7,6 @@ namespace TabloidCLI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Pleasant Greeting!");
-            Console.WriteLine("------------------");
             Console.WriteLine("Would you like to change the console color scheme? Or just press enter to keep the standard scheme.");
             Console.WriteLine("1. Ocean Waves");
             Console.WriteLine("2. Vampire");
@@ -43,6 +41,27 @@ namespace TabloidCLI
                 Console.BackgroundColor = backgroundColor;
                 Console.ForegroundColor = textColor;
                 Console.Clear();
+
+                switch (backgroundColor)
+                {
+                    case ConsoleColor.DarkRed:
+                        Console.WriteLine("Velcome to the Dark and Brooding Castle! Ah ah ah");
+                        Console.WriteLine("------------------");
+                        break;
+                    case ConsoleColor.Yellow:
+                        Console.WriteLine("Bzzz...bzzz..the Swarm greets you.");
+                        Console.WriteLine("------------------");
+                        break;
+                    case ConsoleColor.DarkCyan:
+                        Console.WriteLine("Ocean-based greeting!");
+                        Console.WriteLine("------------------");
+                        break;
+                    default:
+                        Console.WriteLine("Pleasant Greeting!");
+                        Console.WriteLine("------------------");
+                        break;
+                }
+
                 // Each call to Execute will return the next IUserInterfaceManager we should execute
                 // When it returns null, we should exit the program;
                 ui = ui.Execute();
