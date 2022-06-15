@@ -58,14 +58,41 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{note.Id}, { note.Title}, { note.Content}");
             }
-            Note selectedNote = Select();
-            if (selectedNote != null)
+            Note ChosenNote = Choose();
+            if (ChosenNote != null)
 
             {
-                new PostDetailManager(this, _connectionString, selectedNote.Id).Execute();
+                new PostDetailManager(this, _connectionString, ChosenNote.Id).Execute();
             }
         }
+        private Note Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a Note:";
+            }
 
+            Console.WriteLine(prompt);
+
+            List<Note> notes = _noteRepository.GetAll();
+            for (int i = 0; i < notes.Count; i++)
+            {
+                Note note = notes[i];
+                Console.WriteLine($"{i + 1}) {note.Title}");
+            }
+            Console.Write(">");
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return notes[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
         
         private void Add()
         {
