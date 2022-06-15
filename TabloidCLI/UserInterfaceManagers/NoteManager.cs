@@ -8,14 +8,17 @@ namespace TabloidCLI.UserInterfaceManagers
     public class NoteManager : IUserInterfaceManager
     {
         private readonly IUserInterfaceManager _parentUI;
+        private PostRepository _postRepository;
         private NoteRepository _noteRepository;
         private string _connectionString;
-
+        private int _postId;
         public NoteManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
+            _postRepository = new PostRepository(connectionString);
             _noteRepository = new NoteRepository(connectionString);
             _connectionString = connectionString;
+            _postId = postId;
         }
 
         public IUserInterfaceManager Execute()
@@ -113,7 +116,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _noteRepository.Insert(note);
 
             Console.WriteLine($"A related Post: {note.Title} is added to the notes list.");
-            note.PostId = Console.ReadLine();
+            note.PostId = _postId;
         }
 
         private void Remove()
@@ -121,8 +124,12 @@ namespace TabloidCLI.UserInterfaceManagers
             Note noteToDelete = Choose("Which note would you like to remove?");
             if (noteToDelete != null)
             {
+                return;
+            }
+            Console.WriteLine();
+
                 _noteRepository.Delete(noteToDelete.Id);
             }
         }
     }
-}
+
