@@ -46,6 +46,13 @@ namespace TabloidCLI.UserInterfaceManagers
                     RemoveTag();
                     return this;
                 case "4":
+                    ViewPosts();
+                    return this;
+                case "0":
+                    return _parentUI;
+                default:
+                    Console.WriteLine("Invalid Selection");
+                    return this;
                                         
             }
         }
@@ -119,7 +126,20 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void ViewPosts()
         {
-
+            try
+            {
+                List<Post> posts = _blogRepository.GetPostByBlogId(_blogId);
+                foreach (Post post in posts)
+                {
+                    Console.WriteLine("Posts:");
+                    Console.WriteLine(post);
+                }
+                Console.WriteLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("There are no posts currently on this blog");
+            }
         }
     }
 }
