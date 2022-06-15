@@ -30,7 +30,16 @@ namespace TabloidCLI.Repositories
                             Title = reader.GetString(reader.GetOrdinal("Title")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
                             CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
-                            PostId = reader.GetInt32(reader.GetOrdinal("PostId"))
+                            post.PostId = reader.GetInt32(reader.GetOrdinal("post.PostId"))
+
+                            {
+                                 Post = new Post()
+                                {
+                                    Id= reader.GetInt32(reader.GetOrdinal("postId")),
+                                    Title= reader.GetString(reader.GetOrdinal("postTitle")),
+                                    Url = reader.GetString(reader.GetOrdinal("postURL"))
+                                }
+                            }
                         };
                         notes.Add(note);
                     }
@@ -52,7 +61,7 @@ namespace TabloidCLI.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT n.id,
-                                               n.Title As NoteTitle,
+                                               n.Title AS NoteTitle,
                                                n.Context AS NoteContext,
                                                n.CreateDateTime as NoteCreateDateTime,
                                                p.PostId as NotePostId,
@@ -71,7 +80,7 @@ namespace TabloidCLI.Repositories
                             Title = reader.GetString(reader.GetOrdinal("NoteTitle")),
                             Content = reader.GetString(reader.GetOrdinal("NoteContent")),
                             CreateDateTime = reader.GetDateTime(reader.GetOrdinal("NoteCreateDateTime")),
-                            Post = new Post()
+                            post = new Post()
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("PostId")),
                                 Title = reader.GetString(reader.GetOrdinal("PostTitle")),
