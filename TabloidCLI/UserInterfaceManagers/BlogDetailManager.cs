@@ -67,7 +67,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine(" " + tag);
             }
-            Console.WriteLine();
+            Console.ReadKey();
         }
 
         private void AddTag()
@@ -134,11 +134,12 @@ namespace TabloidCLI.UserInterfaceManagers
                     Console.WriteLine("Posts:");
                     Console.WriteLine(post);
                 }
-                Console.WriteLine();
+                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("There are no posts currently on this blog");
+                Console.ReadKey();
             }
         }
     }

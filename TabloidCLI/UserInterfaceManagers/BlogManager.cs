@@ -64,6 +64,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine(blog);
             }
+            Console.ReadKey();
         }
 
         private void Add()
