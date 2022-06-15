@@ -17,8 +17,9 @@ namespace TabloidCLI.Models
         public override string ToString()
         {
             return $@"Title: {Title}
-URL: {Url}
-Author: {Author.FullName}";
+ URL: {Url}
+ {(Author != null ? $"Author: {Author.FullName}"  : "")}";
+            //
         }
     }
 }
