@@ -33,6 +33,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     SearchAuthors();
                     return this;
                 case "3":
+                    SearchPosts();
                     return this;
                 case "4":
                     return this;
@@ -59,6 +60,28 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 results.Display();
             }
+            Console.ReadLine();
         }
+
+        private void SearchPosts()
+        {
+            Console.Write("Tag> ");
+            string tagName = Console.ReadLine();
+
+            SearchResults<Post> results = _tagRepository.SearchPosts(tagName);
+
+            if (results.NoResultsFound)
+            {
+                Console.WriteLine($"No results for {tagName}");
+                Console.ReadKey();
+            }
+            else
+            {
+                results.Display();
+                Console.ReadKey();
+            }
+        }
+
+
     }
 }
