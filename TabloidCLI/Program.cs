@@ -7,6 +7,8 @@ namespace TabloidCLI
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Pleasant Greeting!");
+            Console.WriteLine("------------------");
             Console.WriteLine("Would you like to change the console color scheme? Or just press enter to keep the standard scheme.");
             Console.WriteLine("1. Ocean Waves");
             Console.WriteLine("2. Vampire");
