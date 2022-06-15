@@ -85,10 +85,15 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Journal> journals = _journalRepository.GetAll();
-            foreach (Journal journal in journals)
+            foreach (Journal j in journals)
             {
-                Console.WriteLine(journal);
+                Console.WriteLine($"Title: {j.Title}");
+                Console.WriteLine($"Content: {j.Content}");
+                Console.WriteLine($"Date Entered: {j.CreateDateTime}");
+                Console.WriteLine("------------------------------------------------------------------");
             }
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
         }
 
         private void Add()
