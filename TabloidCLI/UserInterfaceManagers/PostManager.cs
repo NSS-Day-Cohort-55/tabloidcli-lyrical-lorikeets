@@ -37,7 +37,11 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
+                    Console.WriteLine("Post List");
+                    Console.WriteLine("-----------");
                     List();
+                    Console.WriteLine();
+
                     return this;
                 case "2":
                     Add();
@@ -63,9 +67,16 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Post> posts = _postRepository.GetAll();
+            Console.WriteLine("Listing Post Titles and their corresponding Urls:");
             foreach (Post post in posts)
             {
-                Console.WriteLine($"{post.Title} {post.Url}");
+                Console.WriteLine($"{post.Id}. {post.Title} {post.Url}");
+            }
+
+            Post chosenPost = Choose();
+            if (chosenPost != null)
+            {
+                new PostDetailManager(this, _connectionString, chosenPost.Id).Execute();
             }
         }
 
@@ -195,24 +206,36 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
             Console.WriteLine();
-            Console.Write("New Post Title (blank to leave unchanged: ");
+            Console.Write("Edit Post Title (blank to leave unchanged): ");
             string title = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(title))
             {
                 postToEdit.Title = title;
             }
-            Console.Write("New Post Url (blank to leave unchanged: ");
+            Console.Write("Edit Post Url (blank to leave unchanged): ");
             string url = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(url))
             {
                 postToEdit.Url = url;
             }
-            Console.Write("New Publish DateTime (blank to leave unchanged: ");
-            string dateTime = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(dateTime))
+            Console.Write("Edit Publish DateTime (blank to leave unchanged): ");           
+            DateTime userDateTime = postToEdit.PublishDateTime;
+            DateTime.TryParse(Console.ReadLine(), out userDateTime);
+
+            if (userDateTime != postToEdit.PublishDateTime && userDateTime != DateTime.MinValue)
             {
-                //postToEdit.PublishDateTime = dateTime;
+                postToEdit.PublishDateTime = userDateTime;
             }
+            else if(postToEdit.PublishDateTime == DateTime.MinValue)
+            {
+                postToEdit.PublishDateTime = DateTime.Now;
+            }
+
+            Author chosenAuthor = ChooseAuthor();
+            postToEdit.Author = chosenAuthor;
+
+            Blog chosenBlog = ChooseBlog();
+            postToEdit.Blog = chosenBlog;
 
             _postRepository.Update(postToEdit);
         }
