@@ -173,12 +173,11 @@ namespace TabloidCLI
                 conn.Open();
                 using SqlCommand cmd = conn.CreateCommand();
                 {
-                    cmd.CommandText = @"SELECT p.id,
-                                               p.Title,
-                                            Name
+                    cmd.CommandText = @"SELECT p.id, p.URL, p.Title, p.AuthorId
                                           FROM Post p
                                                LEFT JOIN PostTag pt on p.Id = pt.PostId
                                                LEFT JOIN Tag t on t.Id = pt.TagId
+                                               JOIN Author a on a.Id = p.AuthorId
                                          WHERE t.Name LIKE @name";
                     cmd.Parameters.AddWithValue("@name", $"{tagName}");
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -190,6 +189,7 @@ namespace TabloidCLI
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("URL"))
                         };
                         results.Add(post);
                     }
