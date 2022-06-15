@@ -32,13 +32,11 @@ namespace TabloidCLI.Repositories
                             CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
                             post.PostId = reader.GetInt32(reader.GetOrdinal("post.PostId"))
 
+                            Post = new Post()
                             {
-                                 Post = new Post()
-                                {
-                                    Id= reader.GetInt32(reader.GetOrdinal("postId")),
-                                    Title= reader.GetString(reader.GetOrdinal("postTitle")),
-                                    Url = reader.GetString(reader.GetOrdinal("postURL"))
-                                }
+                                Id = reader.GetInt32(reader.GetOrdinal("postId")),
+                                Title = reader.GetString(reader.GetOrdinal("postTitle")),
+                                Url = reader.GetString(reader.GetOrdinal("postURL"))
                             }
                         };
                         notes.Add(note);

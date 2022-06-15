@@ -11,6 +11,16 @@ namespace TabloidCLI.Models
         public string Content { get; set; }
         public DateTime CreateDateTime { get; set; }
         public Post post { get; set; }
+
+        public int PostId { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Title}: {Content}";
+        }
+              
     }
 }
+
+
 
