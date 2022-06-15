@@ -53,11 +53,20 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Note> notes = _noteRepository.GetAll();
+            Console.WriteLine("List of Note Titles and Text Content:");
             foreach (Note note in notes)
             {
-                Console.WriteLine(note);
+                Console.WriteLine($"{note.Id}, { note.Title}, { note.Content}");
+            }
+            Note selectedNote = Select();
+            if (selectedNote != null)
+
+            {
+                new PostDetailManager(this, _connectionString, selectedNote.Id).Execute();
             }
         }
+
+        
         private void Add()
         {
             Console.WriteLine("Add Note");

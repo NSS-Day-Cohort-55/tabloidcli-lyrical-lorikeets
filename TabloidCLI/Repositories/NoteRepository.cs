@@ -31,7 +31,7 @@ namespace TabloidCLI.Repositories
                             Title = reader.GetString(reader.GetOrdinal("Title")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
                             CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
-                            note.PostId = reader.GetInt32(reader.GetOrdinal("note.PostId"))
+                            //note.PostId = reader.GetInt32(reader.GetOrdinal("note.PostId"))
 
                             Post = new Post()
                             {
@@ -52,50 +52,51 @@ namespace TabloidCLI.Repositories
         {
             throw new NotImplementedException();
         }
-        public List<Note> GetByPost(int postId)
-        {
-            using (SqlConnection conn = Connection)
-            {
-                conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"SELECT n.id,
-                                               n.Title AS NoteTitle,
-                                               n.Context AS NoteContext,
-                                               n.CreateDateTime as NoteCreateDateTime,
-                                               p.PostId as NotePostId,
-                                          FROM Note n 
-                                               LEFT JOIN Post a on p.PostId = p.Id                                              
-                                         WHERE p.PostId = @postId";
-                    cmd.Parameters.AddWithValue("@postId", postId);
-                    SqlDataReader reader = cmd.ExecuteReader();
 
-                    List<Note> notes = new List<Note>();
-                    while (reader.Read())
-                    {
-                        Note note = new Note()
-                        {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Title = reader.GetString(reader.GetOrdinal("NoteTitle")),
-                            Content = reader.GetString(reader.GetOrdinal("NoteContent")),
-                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("NoteCreateDateTime")),
-                            post = new Post()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("PostId")),
-                                Title = reader.GetString(reader.GetOrdinal("PostTitle")),
-                                TextContent = reader.GetString(reader.GetOrdinal("PostTextContent")),
+        //public List<Note> GetByPost(int postId)
+        //{
+        //    using (SqlConnection conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"SELECT n.id,
+        //                                       n.Title AS NoteTitle,
+        //                                       n.Context AS NoteContext,
+        //                                       n.CreateDateTime as NoteCreateDateTime,
+        //                                       p.PostId as NotePostId,
+        //                                  FROM Note n 
+        //                                       LEFT JOIN Post a on p.PostId = p.Id                                              
+        //                                 WHERE p.PostId = @postId";
+        //            cmd.Parameters.AddWithValue("@postId", postId);
+        //            SqlDataReader reader = cmd.ExecuteReader();
 
-                            }
-                        };
-                        notes.Add(note);
-                    }
+        //            List<Note> notes = new List<Note>();
+        //            while (reader.Read())
+        //            {
+        //                Note note = new Note()
+        //                {
+        //                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+        //                    Title = reader.GetString(reader.GetOrdinal("NoteTitle")),
+        //                    Content = reader.GetString(reader.GetOrdinal("NoteContent")),
+        //                    CreateDateTime = reader.GetDateTime(reader.GetOrdinal("NoteCreateDateTime")),
+        //                    post = new Post()
+        //                    {
+        //                        Id = reader.GetInt32(reader.GetOrdinal("PostId")),
+        //                        Title = reader.GetString(reader.GetOrdinal("PostTitle")),
+        //                        TextContent = reader.GetString(reader.GetOrdinal("PostTextContent")),
 
-                    reader.Close();
+        //                    }
+        //                };
+        //                notes.Add(note);
+        //            }
 
-                    return notes;
-                }
-            }
-        }
+        //            reader.Close();
+
+        //            return notes;
+        //        }
+        //    }
+        //}
 
         public void Insert(Note note)
         {
