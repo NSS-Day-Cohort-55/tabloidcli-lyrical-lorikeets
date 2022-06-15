@@ -198,6 +198,36 @@ namespace TabloidCLI
             }
         }
 
+        public SearchResults<Blog> SearchBlogs(string tagName)
+        {
+            using SqlConnection conn = Connection;
+            {
+                conn.Open();
+                using SqlCommand cmd = conn.CreateCommand();
+                {
+                    cmd.CommandText = @"SELECT b.id,
+                                               b.Title,
+                                            Name
+                                          FROM Blog b
+                                               LEFT JOIN BlogTag bt on b.Id = bt.BlogId
+                                               LEFT JOIN Tag t on t.Id = bt.TagId
+                                         WHERE t.Name LIKE @name";
+                    cmd.Parameters.AddWithValue("@name", $"{tagName}");
+                    SqlDataReader reader = cmd.ExecuteReader();
 
+                    SearchResults<Blog> results = new();
+                    while (reader.Read())
+                    {
+                        Blog post = new Blog()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                        };
+                        results.Add(post);
+                    }
+                    return results;
+                }
+            }
+        }
     }
 }
