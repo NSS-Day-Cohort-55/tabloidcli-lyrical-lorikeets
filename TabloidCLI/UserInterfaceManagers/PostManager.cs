@@ -10,11 +10,15 @@ namespace TabloidCLI.UserInterfaceManagers
         private readonly IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
         private string _connectionString;
+        private AuthorRepository _authorRepository;
+        private BlogRepository _blogRepository;
 
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
             _postRepository = new PostRepository(connectionString);
+            _authorRepository = new AuthorRepository(connectionString);
+            _blogRepository = new BlogRepository(connectionString);
             _connectionString = connectionString;
         }
 
@@ -33,7 +37,11 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
+                    Console.WriteLine("Post List");
+                    Console.WriteLine("-----------");
                     List();
+                    Console.WriteLine();
+
                     return this;
                 case "2":
                     Add();
@@ -59,9 +67,16 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Post> posts = _postRepository.GetAll();
+            Console.WriteLine("Listing Post Titles and their corresponding Urls:");
             foreach (Post post in posts)
             {
-                Console.WriteLine($"{post.Title} {post.Url}");
+                Console.WriteLine($"{post.Id}. {post.Title} {post.Url}");
+            }
+
+            Post chosenPost = Choose();
+            if (chosenPost != null)
+            {
+                new PostDetailManager(this, _connectionString, chosenPost.Id).Execute();
             }
         }
 
@@ -95,6 +110,67 @@ namespace TabloidCLI.UserInterfaceManagers
                 return null;
             }
         }
+        private Author ChooseAuthor(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose an Author:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Author> authors = _authorRepository.GetAll();
+
+            for (int i = 0; i < authors.Count; i++)
+            {
+                Author author = authors[i];
+                Console.WriteLine($" {i + 1}) {author.FullName}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return authors[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
+
+        private Blog ChooseBlog(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a Blog:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Blog> blogs = _blogRepository.GetAll();
+
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return blogs[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
 
         private void Add()
         {
@@ -107,8 +183,16 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Url: ");
             post.Url = Console.ReadLine();
 
-            //Console.Write("Publish DateTime: ");
-            //post.PublishDateTime = Console.ReadLine();
+            Console.Write("Publish DateTime: ");
+            DateTime userDateTime;
+            DateTime.TryParse(Console.ReadLine(), out userDateTime);
+            post.PublishDateTime = userDateTime;
+
+            Author chosenAuthor = ChooseAuthor();
+            post.Author = chosenAuthor;
+
+            Blog chosenBlog = ChooseBlog();
+            post.Blog = chosenBlog;
 
             _postRepository.Insert(post);
         }
@@ -122,24 +206,36 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
             Console.WriteLine();
-            Console.Write("New Post Title (blank to leave unchanged: ");
+            Console.Write("Edit Post Title (blank to leave unchanged): ");
             string title = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(title))
             {
                 postToEdit.Title = title;
             }
-            Console.Write("New Post Url (blank to leave unchanged: ");
+            Console.Write("Edit Post Url (blank to leave unchanged): ");
             string url = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(url))
             {
                 postToEdit.Url = url;
             }
-            Console.Write("New Publish DateTime (blank to leave unchanged: ");
-            string dateTime = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(dateTime))
+            Console.Write("Edit Publish DateTime (blank to leave unchanged): ");           
+            DateTime userDateTime = postToEdit.PublishDateTime;
+            DateTime.TryParse(Console.ReadLine(), out userDateTime);
+
+            if (userDateTime != postToEdit.PublishDateTime && userDateTime != DateTime.MinValue)
             {
-                //postToEdit.PublishDateTime = dateTime;
+                postToEdit.PublishDateTime = userDateTime;
             }
+            else if(postToEdit.PublishDateTime == DateTime.MinValue)
+            {
+                postToEdit.PublishDateTime = DateTime.Now;
+            }
+
+            Author chosenAuthor = ChooseAuthor();
+            postToEdit.Author = chosenAuthor;
+
+            Blog chosenBlog = ChooseBlog();
+            postToEdit.Blog = chosenBlog;
 
             _postRepository.Update(postToEdit);
         }
