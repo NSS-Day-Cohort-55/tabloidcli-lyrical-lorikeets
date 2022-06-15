@@ -12,6 +12,8 @@ namespace TabloidCLI.UserInterfaceManagers
         private NoteRepository _noteRepository;
         private string _connectionString;
         private int _postId;
+        private int postId;
+
         public NoteManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
@@ -110,8 +112,6 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("Created: ");
             note.CreateDateTime = DateTime.Now;
-
-            
 
             _noteRepository.Insert(note);
 
