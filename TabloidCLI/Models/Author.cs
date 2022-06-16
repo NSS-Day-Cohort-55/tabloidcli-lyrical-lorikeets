@@ -8,6 +8,8 @@ namespace TabloidCLI.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Bio { get; set; }
+        public int PostCount { get; set; }
+        public int BlogCount { get; set; }
         public List<Tag> Tags { get; set; } = new List<Tag>();
 
         public string FullName
