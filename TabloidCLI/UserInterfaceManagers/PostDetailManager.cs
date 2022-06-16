@@ -97,7 +97,13 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 int choice = int.Parse(input);
                 Tag tag = tags[choice - 1];
-                _postRepository.InsertTag(post, tag);
+
+                // avoid adding duplicate entries to the PostTag table
+                Post postWithSameTag = _postRepository.GetPostByTagId(tag.Id);
+                if (postWithSameTag == null)
+                {
+                    _postRepository.InsertTag(post, tag);
+                }
             }
             catch (Exception ex)
             {
