@@ -8,7 +8,7 @@ namespace TabloidCLI.UserInterfaceManagers
     public class PostManager : IUserInterfaceManager
     {
         private readonly IUserInterfaceManager _parentUI;
-        private readonly object _postId;
+       
         private PostRepository _postRepository;
         private string _connectionString;
         private AuthorRepository _authorRepository;
@@ -32,7 +32,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Post");
             Console.WriteLine(" 3) Edit Post");
             Console.WriteLine(" 4) Remove Post");
-            Console.WriteLine(" 5) Note Management");
+           
             Console.WriteLine(" 0) Return to Main Menu");
 
             Console.Write("> ");
@@ -55,10 +55,6 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                     Remove();
                     return this;
-                case "5":
-                    //NoteManagement();
-                    Console.WriteLine("NoteManagement not implemented yet.");
-                    return new NoteManager(this, _connectionString, _postId);
                 case "0":
                     return _parentUI;
                 default:
@@ -251,5 +247,10 @@ namespace TabloidCLI.UserInterfaceManagers
                 _postRepository.Delete(postToDelete.Id);
             }
         }
+
+
+        
+
     }
+
 }

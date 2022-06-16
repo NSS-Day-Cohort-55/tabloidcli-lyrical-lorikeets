@@ -12,7 +12,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private NoteRepository _noteRepository;
         private string _connectionString;
         private int _postId;
-        //private int postId;
+     
 
         public NoteManager(IUserInterfaceManager parentUI, string connectionString, int postId)
         {
@@ -63,12 +63,8 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{note.Id}, {note.Title}, {note.Content}");
             }
-            //Note ChosenNote = Choose();
-            //if (ChosenNote != null)
-        
-            //{
-            //    new PostDetailManager(this, _connectionString, ChosenNote.Id).Execute();
-            //}
+            Console.ReadLine();
+           
         }
         private Note Choose(string prompt = null)
         {
@@ -116,7 +112,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _noteRepository.Insert(note);
 
             Console.WriteLine($"A related Post: {note.Title} is added to the notes list.");
-            note.PostId = _postId;
+            note.Post.Id = _postId;
         }
 
         private void Remove()

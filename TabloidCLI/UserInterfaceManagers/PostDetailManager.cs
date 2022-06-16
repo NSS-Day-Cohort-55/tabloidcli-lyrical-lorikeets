@@ -11,6 +11,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private AuthorRepository _authorRepository;
         private PostRepository _postRepository;
         private TagRepository _tagRepository;
+        private string _connectionString;
         private NoteRepository _noteRepository;
         private int _postId;
 
@@ -20,8 +21,10 @@ namespace TabloidCLI.UserInterfaceManagers
             _authorRepository = new AuthorRepository(connectionString);
             _postRepository = new PostRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
+            _connectionString = connectionString;
+            _postId = postId;          
             _noteRepository = new NoteRepository(connectionString);
-            _postId = postId;
+
         }
 
         public IUserInterfaceManager Execute()
@@ -52,7 +55,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     //RemoveTag();
                     return this;
                 case "4":
-                    //ManageNote();
+                    NoteManager();
                     return this;
                 case "0":
                     return _parentUI;
@@ -70,8 +73,12 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"Url: {post.Url}"); 
             Console.WriteLine($"Publish Date and Time: {post.PublishDateTime}");
             Console.WriteLine();
-        } 
+        }
 
-        
+        private void NoteManager()
+        {
+            new NoteManager(this, _connectionString, _postId).Execute();
+
+        }
     }
 }

@@ -34,12 +34,12 @@ namespace TabloidCLI.Repositories
                             CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
                             //note.PostId = reader.GetInt32(reader.GetOrdinal("note.PostId"))
 
-                            Post = new Post()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("postId")),
-                                Title = reader.GetString(reader.GetOrdinal("postTitle")),
-                                Url = reader.GetString(reader.GetOrdinal("postURL"))
-                            }
+                            //Post = new Post()
+                            //{
+                            //    Id = reader.GetInt32(reader.GetOrdinal("postId")),
+                            //    Title = reader.GetString(reader.GetOrdinal("postTitle")),
+                            //    Url = reader.GetString(reader.GetOrdinal("postURL"))
+                            //}
                         };
                         notes.Add(note);
                     }
@@ -112,7 +112,7 @@ namespace TabloidCLI.Repositories
                     cmd.Parameters.AddWithValue("@NoteTitle", note.Title);
                     cmd.Parameters.AddWithValue("@NoteContent", note.Content);
                     cmd.Parameters.AddWithValue("@CreateDateTime", note.CreateDateTime);
-                    cmd.Parameters.AddWithValue("@PostId", note.PostId);
+                    cmd.Parameters.AddWithValue("@PostId", note.Post.Id);
 
                     cmd.ExecuteNonQuery();
                 }
