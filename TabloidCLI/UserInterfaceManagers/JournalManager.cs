@@ -114,8 +114,29 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
+            Journal journalEntryToEdit = Choose("Which journal entry would you like to edit?");
+            if (journalEntryToEdit == null)
+            {
+                return;
+            }
 
-        }
+            Console.WriteLine();
+            Console.Write("New title (blank to leave unchanged: ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                journalEntryToEdit.Title = title;
+            }
+            Console.Write("New content (blank to leave unchanged: ");
+            string content = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                journalEntryToEdit.Content = content;
+            }
+            
+
+            _journalRepository.Update(journalEntryToEdit);
+        }   
 
         private void Remove()
         {

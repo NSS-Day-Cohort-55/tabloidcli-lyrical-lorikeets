@@ -45,14 +45,14 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "1":
                     View();
                     return this;
-                // following cases 2, 3 and 4 are added as a placeholder
+                // following cases 3 and 4 are added as a placeholder
                 // it will be addressed in a separate ticket that is already 
                 // created for it.
                 case "2":
-                    //AddTag();
+                    AddTag();
                     return this;
                 case "3":
-                    //RemoveTag();
+                    RemoveTag();
                     return this;
                 case "4":
                     NoteManager();

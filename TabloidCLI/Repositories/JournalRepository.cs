@@ -99,7 +99,25 @@ namespace TabloidCLI
 
         public void Update(Journal journal)
         {
-            //Update a Journal Entry By Id
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Journal 
+                                         SET Title = @Title,
+                                             Content = @Content,
+                                             CreateDateTime = @CreateDateTime
+                                         WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", journal.Id);
+                    cmd.Parameters.AddWithValue("@Title", journal.Title);
+                    cmd.Parameters.AddWithValue("@Content", journal.Content);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", journal.CreateDateTime);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Delete(int id)
