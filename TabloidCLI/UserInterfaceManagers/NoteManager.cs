@@ -108,17 +108,21 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("Created: ");
             note.CreateDateTime = DateTime.Now;
-
+            Post post = new Post()
+            {
+                Id = _postId
+            };
+            note.Post = post;
             _noteRepository.Insert(note);
 
             Console.WriteLine($"A related Post: {note.Title} is added to the notes list.");
-            note.Post.Id = _postId;
+            
         }
 
         private void Remove()
         {
             Note noteToDelete = Choose("Which note would you like to remove?");
-            if (noteToDelete != null)
+            if (noteToDelete == null)
             {
                 return;
             }

@@ -49,10 +49,10 @@ namespace TabloidCLI.UserInterfaceManagers
                 // it will be addressed in a separate ticket that is already 
                 // created for it.
                 case "2":
-                    AddTag();
+                    //AddTag();
                     return this;
                 case "3":
-                    RemoveTag();
+                    //RemoveTag();
                     return this;
                 case "4":
                     NoteManager();
