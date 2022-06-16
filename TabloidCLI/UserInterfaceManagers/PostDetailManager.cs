@@ -78,7 +78,11 @@ namespace TabloidCLI.UserInterfaceManagers
         private void NoteManager()
         {
             new NoteManager(this, _connectionString, _postId).Execute();
+        }
 
+        private void AddTag()
+        {
+            Post post = _postRepository.Get(_postId);
             Console.WriteLine($"Which tag would you like to add to {post.Title}?");
             List<Tag> tags = _tagRepository.GetAll();
 
