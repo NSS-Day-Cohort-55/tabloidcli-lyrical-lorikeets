@@ -62,6 +62,8 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"Name: {author.FullName}");
             Console.WriteLine($"Bio: {author.Bio}");
             Console.WriteLine("Tags:");
+            Console.WriteLine($"Number of Posts: {author.PostCount}");
+            Console.WriteLine($"Number of Blogs: {author.BlogCount}");
             foreach (Tag tag in author.Tags)
             {
                 Console.WriteLine(" " + tag);

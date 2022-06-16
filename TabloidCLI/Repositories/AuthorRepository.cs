@@ -61,7 +61,14 @@ namespace TabloidCLI
                                           FROM Author a 
                                                LEFT JOIN AuthorTag at on a.Id = at.AuthorId
                                                LEFT JOIN Tag t on t.Id = at.TagId
-                                         WHERE a.id = @id";
+                                         WHERE a.id = @id;
+
+                                       SELECT a.Id, COUNT(p.Id) AS PostCount, COUNT(b.Id) AS BlogCount
+                                        FROM Author a
+                                        LEFT JOIN Post p ON a.Id = p.AuthorId
+                                        LEFT JOIN Blog b ON b.Id = p.BlogId
+                                        WHERE a.Id = @id
+                                        GROUP BY a.Id;";
 
                     cmd.Parameters.AddWithValue("@id", id);
 
@@ -88,6 +95,15 @@ namespace TabloidCLI
                                 Id = reader.GetInt32(reader.GetOrdinal("TagId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name")),
                             });
+                        }
+
+                        if (reader.NextResult())
+                        {
+                            while (reader.Read())
+                            {
+                                author.PostCount = reader.GetInt32(reader.GetOrdinal("PostCount"));
+                                author.BlogCount = reader.GetInt32(reader.GetOrdinal("BlogCount"));
+                            }
                         }
                     }
 
