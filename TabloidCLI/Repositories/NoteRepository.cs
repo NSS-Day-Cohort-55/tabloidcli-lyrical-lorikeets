@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
 using TabloidCLI.UserInterfaceManagers;
+using System.Data;
 
 namespace TabloidCLI.Repositories
 {
@@ -42,7 +43,7 @@ namespace TabloidCLI.Repositories
                         };
                         notes.Add(note);
                     }
-
+                    reader.Close();
                     return notes;
                 }
             }
@@ -111,7 +112,7 @@ namespace TabloidCLI.Repositories
                     cmd.Parameters.AddWithValue("@NoteTitle", note.Title);
                     cmd.Parameters.AddWithValue("@NoteContent", note.Content);
                     cmd.Parameters.AddWithValue("@CreateDateTime", note.CreateDateTime);
-                    cmd.Parameters.AddWithValue("@postId", note.PostId);
+                    cmd.Parameters.AddWithValue("@PostId", note.PostId);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -120,16 +121,26 @@ namespace TabloidCLI.Repositories
 
 
 
-                    public void Update(Note note)
+        public void Update(Note note)
         {
             throw new NotImplementedException();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Note WHERE Id = @id)";               
+                    cmd.Parameters.AddWithValue("@id",id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
-  }
+}
 
 

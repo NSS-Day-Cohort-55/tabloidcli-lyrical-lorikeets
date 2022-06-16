@@ -5,16 +5,16 @@ using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
-    public class NoteManager : IUserInterfaceManager
+    internal class NoteManager : IUserInterfaceManager
     {
         private readonly IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
         private NoteRepository _noteRepository;
         private string _connectionString;
         private int _postId;
-        private int postId;
+        //private int postId;
 
-        public NoteManager(IUserInterfaceManager parentUI, string connectionString)
+        public NoteManager(IUserInterfaceManager parentUI, string connectionString, int postId)
         {
             _parentUI = parentUI;
             _postRepository = new PostRepository(connectionString);
@@ -61,14 +61,14 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("List of Note Titles and Text Content:");
             foreach (Note note in notes)
             {
-                Console.WriteLine($"{note.Id}, { note.Title}, { note.Content}");
+                Console.WriteLine($"{note.Id}, {note.Title}, {note.Content}");
             }
-            Note ChosenNote = Choose();
-            if (ChosenNote != null)
-
-            {
-                new PostDetailManager(this, _connectionString, ChosenNote.Id).Execute();
-            }
+            //Note ChosenNote = Choose();
+            //if (ChosenNote != null)
+        
+            //{
+            //    new PostDetailManager(this, _connectionString, ChosenNote.Id).Execute();
+            //}
         }
         private Note Choose(string prompt = null)
         {

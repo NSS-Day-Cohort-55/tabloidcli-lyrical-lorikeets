@@ -8,10 +8,12 @@ namespace TabloidCLI.UserInterfaceManagers
     public class PostManager : IUserInterfaceManager
     {
         private readonly IUserInterfaceManager _parentUI;
+        private readonly object _postId;
         private PostRepository _postRepository;
         private string _connectionString;
         private AuthorRepository _authorRepository;
         private BlogRepository _blogRepository;
+        private NoteRepository _noteRepository;
 
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
         {
@@ -19,6 +21,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _postRepository = new PostRepository(connectionString);
             _authorRepository = new AuthorRepository(connectionString);
             _blogRepository = new BlogRepository(connectionString);
+            _noteRepository = new NoteRepository(connectionString);
             _connectionString = connectionString;
         }
 
@@ -55,7 +58,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "5":
                     //NoteManagement();
                     Console.WriteLine("NoteManagement not implemented yet.");
-                    return this;
+                    return new NoteManager(this, _connectionString, _postId);
                 case "0":
                     return _parentUI;
                 default:
