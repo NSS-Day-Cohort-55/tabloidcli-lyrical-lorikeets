@@ -71,6 +71,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine(author);
             }
+            Console.ReadKey();
         }
 
         private Author Choose(string prompt = null)
