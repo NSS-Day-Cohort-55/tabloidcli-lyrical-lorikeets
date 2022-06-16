@@ -22,7 +22,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _postRepository = new PostRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
             _connectionString = connectionString;
-            _postId = postId;          
+            _postId = postId;
             _noteRepository = new NoteRepository(connectionString);
 
         }
@@ -70,7 +70,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("Post Details:");
             Post post = _postRepository.Get(_postId);
             Console.WriteLine($"Title: {post.Title}");
-            Console.WriteLine($"Url: {post.Url}"); 
+            Console.WriteLine($"Url: {post.Url}");
             Console.WriteLine($"Publish Date and Time: {post.PublishDateTime}");
             Console.WriteLine();
         }
