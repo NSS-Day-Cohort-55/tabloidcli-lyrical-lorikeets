@@ -214,10 +214,11 @@ namespace TabloidCLI.Repositories
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
+
                 using (SqlCommand cmd = conn.CreateCommand())
-                {
+                {           
                     cmd.CommandText = @"INSERT INTO PostTag (PostId, TagId)
-                                                        VALUES (@postId, @tagId)";
+                                            VALUES (@postId, @tagId)";
                     cmd.Parameters.AddWithValue("@postId", post.Id);
                     cmd.Parameters.AddWithValue("@tagId", inputTag.Id);
                     cmd.ExecuteNonQuery();
@@ -238,6 +239,35 @@ namespace TabloidCLI.Repositories
                     cmd.Parameters.AddWithValue("@tagId", tagId);
 
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public Post GetPostByTagId(int tagid)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT PostId FROM PostTag WHERE TagId = @tagid";
+                    cmd.Parameters.AddWithValue("@tagid", tagid);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        Post post = null;
+
+                        // If we only expect a single row back from the database, we don't need a while loop.
+                        if (reader.Read())
+                        {
+                            post = new Post
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("PostId"))
+                            };
+                        }
+                        return post;
+                    }
+
                 }
             }
         }
