@@ -11,6 +11,8 @@ namespace TabloidCLI.UserInterfaceManagers
         private AuthorRepository _authorRepository;
         private PostRepository _postRepository;
         private TagRepository _tagRepository;
+        private string _connectionString;
+        private NoteRepository _noteRepository;
         private int _postId;
 
         public PostDetailManager(IUserInterfaceManager parentUI, string connectionString, int postId)
@@ -19,7 +21,10 @@ namespace TabloidCLI.UserInterfaceManagers
             _authorRepository = new AuthorRepository(connectionString);
             _postRepository = new PostRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
+            _connectionString = connectionString;
             _postId = postId;
+            _noteRepository = new NoteRepository(connectionString);
+
         }
 
         public IUserInterfaceManager Execute()
@@ -44,13 +49,13 @@ namespace TabloidCLI.UserInterfaceManagers
                 // it will be addressed in a separate ticket that is already 
                 // created for it.
                 case "2":
-                    AddTag();
+                    //AddTag();
                     return this;
                 case "3":
-                    RemoveTag();
+                    //RemoveTag();
                     return this;
                 case "4":
-                    //ManageNote();
+                    NoteManager();
                     return this;
                 case "0":
                     return _parentUI;
@@ -65,23 +70,19 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("Post Details:");
             Post post = _postRepository.Get(_postId);
             Console.WriteLine($"Title: {post.Title}");
-            Console.WriteLine($"Url: {post.Url}"); 
+            Console.WriteLine($"Url: {post.Url}");
             Console.WriteLine($"Publish Date and Time: {post.PublishDateTime}");
-            Console.WriteLine("Tags:");
-            foreach (Tag tag in post.Tags)
-            {
-                Console.WriteLine(" " + tag);
-            }
-            // this is needed to show the result to the user
-            // otherwise, the control will return immediately
-            // to the parent.
-            Console.ReadLine();
+            Console.WriteLine();
+        }
+
+        private void NoteManager()
+        {
+            new NoteManager(this, _connectionString, _postId).Execute();
         }
 
         private void AddTag()
         {
             Post post = _postRepository.Get(_postId);
-
             Console.WriteLine($"Which tag would you like to add to {post.Title}?");
             List<Tag> tags = _tagRepository.GetAll();
 
@@ -110,34 +111,5 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine("Invalid Selection. Won't add any tags.");
             }
         }
-
-        private void RemoveTag()
-        {
-            Post post = _postRepository.Get(_postId);
-
-            Console.WriteLine($"Which tag would you like to remove from {post.Title}?");
-            List<Tag> tags = post.Tags;
-
-            Console.WriteLine($"Number of Tags for this post: {tags.Count}");
-            for (int i = 0; i < tags.Count; i++)
-            {
-                Tag tag = tags[i];
-                Console.WriteLine($" {i + 1}) {tag.Name}");
-            }
-            Console.Write("> ");
-
-            string input = Console.ReadLine();
-            try
-            {
-                int choice = int.Parse(input);
-                Tag tag = tags[choice - 1];
-                _postRepository.DeleteTag(post.Id, tag.Id);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Invalid Selection. Won't remove any tags.");
-            }
-        }
-
     }
 }
